@@ -52,22 +52,15 @@ body {
     function drawData() {
          var data = Adapter.adapt([ruwiki,rowiki]);
          
-          
-         /**
-         Returns YYYY-MM_DD
-         if it is th first of the month or empty
-        **/
-        function firstOfMonthTicks(x){
+        function monthTicks(x){
            
-            return moment(x).format('YYYY-MM'); 
-
+            return moment(x).format('YYYY-MM');
         }
-        console.log(data);
         
          $('#lineChart').epoch({
              type:'line',
              data: data,
-             tickFormats: {bottom: firstOfMonthTicks},
+             tickFormats: {bottom: monthTicks},
          });
     }
  </script>
