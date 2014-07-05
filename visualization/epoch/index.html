@@ -1,18 +1,24 @@
 <html>
 <head>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"></script>
+    <script>
+    moment().format()
+    </script>
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src ="../common/zepto.js"></script>
     <script src ="../common/epoch.debug.zepto.js"></script>
     <script src="../common/fetcher.js"></script>
      <script src="./js/adapter.js"></script>
-     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"></script>
+     
     <link rel="stylesheet" rel="text/css" href="../common/epoch.0.5.2.min.css">
 </head>
 <body>
+    <div id="placeholder">
+</div>
 <div id="lineChart" class="epoch category10" style="height: 200px;"></div>
     
  <script>
-     moment().format();
+     
      var ruwiki = {};
  
      //TODO nicer syntax. Batch fetching both records
@@ -30,13 +36,10 @@
     
      });
 
-    
-    
     function drawData() {
          var data = Adapter.adapt([ruwiki,rowiki]);
          
-         
-         
+          
          /**
          Returns YYYY-MM_DD
          if it is th first of the month or empty

@@ -49,27 +49,29 @@ var lineChartData = [
 
 **/
 
-var Adapter = (function () {
+var Adapter = (function (moment) {
     "use strict";
+    var m = moment;
     var adapter = {};
     
     /**
     WikimetricsDataset is an array
     **/
     adapter.adapt = function(wikimetricsDataset){
+        
         var lineCharData = [];
        
-        var l = wikimetricsDataset.length;
-    
-        for (var i = 0; i <l; i++) {
+        for (var i = 0; i < wikimetricsDataset.length; i++) {
             var serie = wikimetricsDataset[i];
             var values = [];
             for (var p in serie){
-                if (serie.hasOwnProperty(p) && p.match(/\d\d\d\d-\d\d/)) {
+                if (serie.hasOwnProperty(p) && p.match(/\d\d\d\d-\d\d/) ) {
+
                     var value = {};
                     // p is a date, looks like we need to convert it to 
                     // a number
-                    var date = moment(p,"YYYY-MM-DD HH-MM-SS").valueOf();
+                    
+                    var date = m(p,"YYYY-MM-DD").valueOf();
                     value.x = date;
                     value.y = serie[p].Sum.newly_registered;
                     values.push(value);
@@ -78,14 +80,8 @@ var Adapter = (function () {
            
             //Let's sort values 
             values.sort(function(a,b){
-              
                 return a.x - b.x;
-            })
-            
-            for (var i =0;i<values.length;i++) {
-                console.log(values[i].x);
-                console.log(moment(values[i].x).format('YYYY-MM-DD'))
-            }
+            });
             
             //serie processed, i think this is expected to be ordered on time
             var epochSerie = {
@@ -99,4 +95,4 @@ var Adapter = (function () {
     };
     
     return adapter;
-})();
+})(moment);
