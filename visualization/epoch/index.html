@@ -12,11 +12,24 @@
      
     <link rel="stylesheet" rel="text/css" href="../common/epoch.0.5.2.min.css">
 </head>
+<style>
+body {
+    font-family:Verdana;
+    font-size:18px;
+}
+#lineChart .ruwiki .area {
+  fill: pink;
+}
+</style>
 <body>
-    <div id="placeholder">
-</div>
-<div id="lineChart" class="epoch category10" style="height: 200px;"></div>
+    <h1> Newly Registered Users </h1>
+<div id="lineChart" class="epoch category10" style="height: 300px; width:900px"></div>
     
+    <div>
+        <p style="color:#006699"> ruwiki</p>
+        
+        <p style="color:orange"> rowiki</p>
+    </div>
  <script>
      
      var ruwiki = {};
@@ -49,10 +62,12 @@
             return moment(x).format('YYYY-MM'); 
 
         }
+        console.log(data);
+        
          $('#lineChart').epoch({
              type:'line',
              data: data,
-             tickFormats: {bottom: firstOfMonthTicks}
+             tickFormats: {bottom: firstOfMonthTicks},
          });
     }
  </script>
