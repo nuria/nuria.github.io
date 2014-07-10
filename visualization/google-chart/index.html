@@ -1,0 +1,115 @@
+<html> 
+<head> 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"></script>
+    <script>
+    moment().format()
+    </script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="./js/adapter.js"></script>
+     <script src="../common/fetcher.js"></script>
+    <title> Google Chart visualization of Newly Registered Users </title>
+    <script src="./bower_components/platform/platform.js"></script>
+    <link rel="import" href="./bower_components/google-chart/google-chart.html">
+    <script>
+     
+        var ruwiki = {};
+       
+ 
+        //TODO nicer syntax. Batch fetching both records
+        Fetcher.json('../data/ruwiki.json', function(json) {
+            ruwiki = json;
+            ruwiki.label = "ruwiki";
+        });
+ 
+        var rowiki = {}
+ 
+        Fetcher.json('../data/rowiki.json', function(json) {
+            rowiki = json;
+            rowiki.label = "rowiki";
+            drawData();
+    
+        });
+
+       function drawData() {
+            var data = Adapter.adapt([ruwiki,rowiki]);
+            
+            
+            function createGoogleChartComponent(data){
+                // this needs to create a google chart component on the fly 
+                // and set its data property to data
+                
+    
+                 var el = document.createElement('div');
+                 data = JSON.stringify(data);
+                
+                 /**data = '[["date","value"],[1376776800000,315],[1389654000000,466]]'**/
+                 var s = '<google-chart  id ="4" type="line" height="500px" width="800px"'
+                 +' options="{\'title\': \'Distribution of days in 2001Q1\'}"' 
+                /** +' cols="[{"label":"Month", "type":"string"}, {"label":"Days", "type":"number"}]"' 
+                 +' rows= "[["Jan", 31],["Feb", 28],["Mar", 31]]"' **/
+                 + ' data='+data
+                 +' </google-chart>';
+                
+                 el.innerHTML = s;
+                 // The custom elements polyfill can't see the <polymer-element>
+                 // unless you put it in the DOM.
+                 document.body.appendChild(el);
+            }
+            
+           function monthTicks(x){
+           
+               return moment(x).format('YYYY-MM');
+           }
+        
+          createGoogleChartComponent(data);
+            
+       }
+    </script>
+</head>
+
+
+<body unresolved>
+    
+    
+    <!-- 
+    See: 
+        http://googlewebcomponents.github.io/google-chart/components/google-chart/
+        For ways we in which we can pass data
+        
+        We are going to build a simple timeseries 
+        so :
+        cols='[{"label":"Mth", "type":"string"}, {"label":"Days", "type":"number"}]'
+        rows='[["Jan", 31],["Feb", 28],["Mar", 31]]'
+        
+        data {
+            cols: [],
+            
+            rows: [],
+        
+            rows: []
+        
+        }
+        Should be sufficient to pass data 
+    -->
+     
+     <google-chart id='43'
+       type='line'
+       height='300px'
+       width='400px'
+       options='{"title": "Distribution of days in 2001Q1"}'
+       data = '[["date","value"],[1376776800000,315],[1389654000000,466]]'
+     </google-chart>
+     
+     <google-chart
+       type='pie'
+       height='300px'
+       width='400px'
+       options='{"title": "Distribution of days in 2001Q1"}'
+       cols='[{"label":"Month", "type":"string"}, {"label":"Days", "type":"number"}]'
+       rows= '[["Jan", 31],["Feb", 28],["Mar", 31]]'
+     </google-chart>
+    
+    
+</body>
+
+</html>
