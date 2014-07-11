@@ -12,25 +12,20 @@
     <link rel="import" href="./bower_components/google-chart/google-chart.html">
     <script>
      
-        var ruwiki = {};
-       
- 
         //TODO nicer syntax. Batch fetching both records
         Fetcher.json('../data/ruwiki.json', function(json) {
-            ruwiki = json;
+            var ruwiki = json;
             ruwiki.label = "ruwiki";
-        });
- 
-        var rowiki = {}
- 
-        Fetcher.json('../data/rowiki.json', function(json) {
-            rowiki = json;
-            rowiki.label = "rowiki";
-            drawData();
+            Fetcher.json('../data/rowiki.json', function(json) {
+                var rowiki = json;
+                rowiki.label = "rowiki";
+                drawData(ruwiki,rowiki);
     
+            });
         });
+ 
 
-       function drawData() {
+       function drawData(ruwiki, rowiki) {
             var data = Adapter.adapt([ruwiki,rowiki]);
             
             
@@ -38,22 +33,19 @@
                 // this needs to create a google chart component on the fly 
                 // and set its data property to data
                 
-    
                  var el = document.createElement('div');
                  data = JSON.stringify(data);
                 
                  /**data = '[["date","value"],[1376776800000,315],[1389654000000,466]]'**/
                  var s = '<google-chart  id ="4" type="line" height="500px" width="800px"'
-                 +' options="{\'title\': \'Distribution of days in 2001Q1\'}"' 
-                /** +' cols="[{"label":"Month", "type":"string"}, {"label":"Days", "type":"number"}]"' 
-                 +' rows= "[["Jan", 31],["Feb", 28],["Mar", 31]]"' **/
+                 +' options="{\'title\': \'Newly Registered Users\'}"' 
                  + ' data='+data
                  +' </google-chart>';
                 
                  el.innerHTML = s;
                  // The custom elements polyfill can't see the <polymer-element>
                  // unless you put it in the DOM.
-                 document.body.appendChild(el);
+                 document.getElementById("wikimetricsChart").appendChild(el);
             }
             
            function monthTicks(x){
@@ -70,6 +62,8 @@
 
 <body unresolved>
     
+    <div id="wikimetricsChart">
+    </div>
     
     <!-- 
     See: 
@@ -92,23 +86,16 @@
         Should be sufficient to pass data 
     -->
      
+     <!-- uncoment to test google chart component 
      <google-chart id='43'
        type='line'
        height='300px'
        width='400px'
        options='{"title": "Distribution of days in 2001Q1"}'
-       data = '[["date","value"],[1376776800000,315],[1389654000000,466]]'
+       data = '[["date","value", "value2"],[1376776800000,315,421],[1389654000000,466,455]]'
      </google-chart>
      
-     <google-chart
-       type='pie'
-       height='300px'
-       width='400px'
-       options='{"title": "Distribution of days in 2001Q1"}'
-       cols='[{"label":"Month", "type":"string"}, {"label":"Days", "type":"number"}]'
-       rows= '[["Jan", 31],["Feb", 28],["Mar", 31]]'
-     </google-chart>
-    
+    -->
     
 </body>
 

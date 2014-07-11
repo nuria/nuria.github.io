@@ -34,7 +34,7 @@ https://google-developers.appspot.com/chart/interactive/docs/gallery/linechart
 It also can be a plain "excell like export"
 https://google-developers.appspot.com/chart/interactive/docs/reference#dataparam
 
-We go with teh 1st arry, like form:
+We go with the 1st arry, like form:
 
 var data = google.visualization.arrayToDataTable([
           ['Year', 'Sales', 'Expenses'],
@@ -65,14 +65,15 @@ var Adapter = (function (moment) {
     
     **/
     adapter.adapt = function(wikimetricsDataset){
-       
+        var data = {};
+        var dates = [];
+        // array of values
+        // hash map like 
+        // data[date] = [valueSerie1, valueSerie2]
+        
         for (var i = 0; i < wikimetricsDataset.length; i++) {
+            console.log("series");
             var serie = wikimetricsDataset[i];
-            // array of values
-            // hash map like 
-            // data[date] = [valueSerie1, valueSerie2]
-            var data = {};
-            var dates = [];
             for (var p in serie){
                 if (serie.hasOwnProperty(p) && p.match(/\d\d\d\d-\d\d/) ) {
                     
@@ -90,28 +91,36 @@ var Adapter = (function (moment) {
                 }
                 
             }
-           
-            //Let's sort our date array (they are unix timestamps)
-            dates.sort();
-            
-            console.log(dates);
-            
-            // now build the dataset we are planning on using
-            // by looking at the dates sorted array before
-            var dataForViz = [];
-            
-            dataForViz.push(["date","registrations"]);
-            
-            for (var i = 0; i<dates.length; i++) {
-                var record = [];
-                var date = dates[i];
-                record.push(date,data[date][0]);
-                dataForViz.push(record);
-            }
-            
-            return dataForViz;
         }
         
+        //Let's sort our date array (they are unix timestamps)
+        dates.sort();
+    
+        
+        // now build the dataset we are planning on using
+        // by looking at the dates sorted array before
+        var dataForViz = [];
+        var labels = [];
+        labels.push("date");
+       
+        for (var i = 0; i < wikimetricsDataset.length; i++) {
+            labels.push(wikimetricsDataset[i].label);
+        }
+        dataForViz.push(labels);
+        
+        for (var i = 0; i<=dates.length; i++) {
+            var record = [];
+            var date = dates[i];
+            if (date) {
+                record.push(moment(date).format('YYYY-MM'));
+                record.push(data[date][0]);
+                record.push(data[date][1]);
+                dataForViz.push(record);
+            }
+        }
+        
+
+        return dataForViz;
         
     };
     
