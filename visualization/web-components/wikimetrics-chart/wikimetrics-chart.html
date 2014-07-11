@@ -1,0 +1,128 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../core-ajax/core-ajax.html">
+<link rel="import" href="../google-apis/google-jsapi.html">
+
+
+<!--
+`wikimetrics-chart` A Webcomponent to display data from wikipedia
+
+    <wikimetrics-chart
+      height='300px'
+      width='400px'
+      projects = ['enwiki', 'dewiki']
+      metric = "NewlyRegister"
+      options='{"title": ""Blah""}'
+      data='[["Month", "Days"], ["Jan", 31], ["Feb", 28], ["Mar", 31]]'
+    </wikimetrics-chart>
+
+Data can be provided via the `data` attribute, passing in the data directly:
+
+      data='[["Month", "Days"], ["Jan", 31], ["Feb", 28], ["Mar", 31]]'
+
+@element wikimetrics-chart
+@status alpha
+@homepage http://nuria.github.io/google-chart
+-->
+
+<html> 
+<head> 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"></script>
+    <script>
+    moment().format()
+    </script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="./js/adapter.js"></script>
+     <script src="../common/fetcher.js"></script>
+    <title> Google Chart visualization of Newly Registered Users </title>
+    <script src="./bower_components/platform/platform.js"></script>
+    <link rel="import" href="./bower_components/google-chart/google-chart.html">
+    <script>
+     
+        //TODO nicer syntax. Batch fetching both records
+        Fetcher.json('../data/ruwiki.json', function(json) {
+            var ruwiki = json;
+            ruwiki.label = "ruwiki";
+            Fetcher.json('../data/rowiki.json', function(json) {
+                var rowiki = json;
+                rowiki.label = "rowiki";
+                drawData(ruwiki,rowiki);
+    
+            });
+        });
+ 
+
+       function drawData(ruwiki, rowiki) {
+            var data = Adapter.adapt([ruwiki,rowiki]);
+            
+            
+            function createGoogleChartComponent(data){
+                // this needs to create a google chart component on the fly 
+                // and set its data property to data
+                
+                 var el = document.createElement('div');
+                 data = JSON.stringify(data);
+                
+                 /**data = '[["date","value"],[1376776800000,315],[1389654000000,466]]'**/
+                 var s = '<google-chart  id ="4" type="line" height="500px" width="800px"'
+                 +' options="{\'title\': \'Newly Registered Users\'}"' 
+                 + ' data='+data
+                 +' </google-chart>';
+                
+                 el.innerHTML = s;
+                 // The custom elements polyfill can't see the <polymer-element>
+                 // unless you put it in the DOM.
+                 document.getElementById("wikimetricsChart").appendChild(el);
+            }
+            
+           function monthTicks(x){
+           
+               return moment(x).format('YYYY-MM');
+           }
+        
+          createGoogleChartComponent(data);
+            
+       }
+    </script>
+</head>
+
+
+<body unresolved>
+    
+    <div id="wikimetricsChart">
+    </div>
+    
+    <!-- 
+    See: 
+        http://googlewebcomponents.github.io/google-chart/components/google-chart/
+        For ways we in which we can pass data
+        
+        We are going to build a simple timeseries 
+        so :
+        cols='[{"label":"Mth", "type":"string"}, {"label":"Days", "type":"number"}]'
+        rows='[["Jan", 31],["Feb", 28],["Mar", 31]]'
+        
+        data {
+            cols: [],
+            
+            rows: [],
+        
+            rows: []
+        
+        }
+        Should be sufficient to pass data 
+    -->
+     
+     <!-- uncoment to test google chart component 
+     <google-chart id='43'
+       type='line'
+       height='300px'
+       width='400px'
+       options='{"title": "Distribution of days in 2001Q1"}'
+       data = '[["date","value", "value2"],[1376776800000,315,421],[1389654000000,466,455]]'
+     </google-chart>
+     
+    -->
+    
+</body>
+
+</html>
