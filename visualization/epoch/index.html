@@ -43,6 +43,7 @@ body {
      Fetcher.json('../data/rowiki.json', function(json) {
          rowiki = json;
          rowiki.label = "rowiki";
+         // race condition here, first call might not have finished, 
          drawData();
     
      });

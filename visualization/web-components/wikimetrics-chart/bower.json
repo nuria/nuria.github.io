@@ -1,0 +1,29 @@
+{
+  "name": "wikimetrics-chart",
+  "version": "0.0.1",
+  "homepage": "https://github.com/nuria/nuria.github.io/wikimetrics-chart",
+  "authors": [
+    "Nuria Ruiz <nuria@wikimedia.org>"
+  ],
+  "description": "Google Chart graphs of Wikipedia's editor activity. Data served by Wikimetrics.",
+  "main": "wikimetrics-chart.html",
+  "keywords": [
+    "Wikipedia",
+    "Wikimetrics",
+    "Google",
+    "Charts"
+  ],
+  "license": "Apache2",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+"dependencies": {
+    "polymer": "Polymer/polymer#~0.3.1",
+    "moment": "Moment/moment#~2.7.0",
+    "google-chart": "PolymerLabs/google-chart#~0.0.1"
+  }
+}
