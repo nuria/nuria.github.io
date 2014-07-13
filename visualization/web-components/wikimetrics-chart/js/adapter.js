@@ -72,7 +72,6 @@ var Adapter = (function (moment) {
         // data[date] = [valueSerie1, valueSerie2]
         
         for (var i = 0; i < wikimetricsDataset.length; i++) {
-            console.log("series");
             var serie = wikimetricsDataset[i];
             for (var p in serie){
                 if (serie.hasOwnProperty(p) && p.match(/\d\d\d\d-\d\d/) ) {

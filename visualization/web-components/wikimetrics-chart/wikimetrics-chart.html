@@ -1,128 +1,176 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../core-ajax/core-ajax.html">
-<link rel="import" href="../google-apis/google-jsapi.html">
-
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/google-chart/google-chart.html">
 
 <!--
-`wikimetrics-chart` A Webcomponent to display data from wikipedia
 
-    <wikimetrics-chart
-      height='300px'
-      width='400px'
-      projects = ['enwiki', 'dewiki']
-      metric = "NewlyRegister"
-      options='{"title": ""Blah""}'
-      data='[["Month", "Days"], ["Jan", 31], ["Feb", 28], ["Mar", 31]]'
-    </wikimetrics-chart>
+wikimetrics-chart` A Webcomponent to display editor data from wikipedia. on your site.
 
-Data can be provided via the `data` attribute, passing in the data directly:
+Prototype displays Newly Registered User data: 
+https://meta.wikimedia.org/wiki/Research:Newly_registered_user
 
-      data='[["Month", "Days"], ["Jan", 31], ["Feb", 28], ["Mar", 31]]'
+Data is included with prototype at this time. 
+Data will be feched from wikimetrics once public
+data is available on the production instance.
+
+Wikimetrics main site:
+https://metrics.wmflabs.org/
+
+Public files:
+(for now deployed only to staging area: 
+https://metrics-staging.wmflabs.org/static/public/datafiles/)
+
+<wikimetrics-chart
+  height='300px'
+  width='400px'
+  projects = ['enwiki', 'dewiki']
+  metric = "NewlyRegister"
+  options='{"title": ""Blah""}'
+</wikimetrics-chart>
 
 @element wikimetrics-chart
 @status alpha
-@homepage http://nuria.github.io/google-chart
+@homepage http://nuria.github.io/wiimetrics-chart
 -->
 
-<html> 
-<head> 
+<polymer-element name="wikimetrics-chart" attributes=" width height projects metric">
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"></script>
     <script>
     moment().format()
     </script>
-    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="./js/adapter.js"></script>
-     <script src="../common/fetcher.js"></script>
-    <title> Google Chart visualization of Newly Registered Users </title>
-    <script src="./bower_components/platform/platform.js"></script>
-    <link rel="import" href="./bower_components/google-chart/google-chart.html">
+    <script src="./js/fetcher.js"></script>
+  
+  <script>
+  // TODO encapsulate here all js needed
+  // get moment from bower
+  
+  </script>
+
+    <template>
+        <google-chart
+          type='line'
+          height= {{height}}
+          width= {{width}}
+          options= {{options}}
+          data = {{data}}
+        </google-chart>
+    </template>
+
     <script>
-     
-        //TODO nicer syntax. Batch fetching both records
-        Fetcher.json('../data/ruwiki.json', function(json) {
-            var ruwiki = json;
-            ruwiki.label = "ruwiki";
-            Fetcher.json('../data/rowiki.json', function(json) {
-                var rowiki = json;
-                rowiki.label = "rowiki";
-                drawData(ruwiki,rowiki);
-    
-            });
-        });
- 
+    Polymer({
+      /**
+       * Fired when the graph is displayed.
+       *
+       * @event wikimetrics-chart-render
+       */
+      /**
+       * Sets the width of the chart on the page.
+       *
+       * @attribute width
+       * @type string
+       */
+      width: '400px',
 
-       function drawData(ruwiki, rowiki) {
-            var data = Adapter.adapt([ruwiki,rowiki]);
-            
-            
-            function createGoogleChartComponent(data){
-                // this needs to create a google chart component on the fly 
-                // and set its data property to data
-                
-                 var el = document.createElement('div');
-                 data = JSON.stringify(data);
-                
-                 /**data = '[["date","value"],[1376776800000,315],[1389654000000,466]]'**/
-                 var s = '<google-chart  id ="4" type="line" height="500px" width="800px"'
-                 +' options="{\'title\': \'Newly Registered Users\'}"' 
-                 + ' data='+data
-                 +' </google-chart>';
-                
-                 el.innerHTML = s;
-                 // The custom elements polyfill can't see the <polymer-element>
-                 // unless you put it in the DOM.
-                 document.getElementById("wikimetricsChart").appendChild(el);
-            }
-            
-           function monthTicks(x){
-           
-               return moment(x).format('YYYY-MM');
-           }
-        
-          createGoogleChartComponent(data);
-            
-       }
-    </script>
-</head>
+      /**
+       * Sets the height of the chart on the page.
+       *
+       * @attribute height
+       * @type string
+       */
+      height: '300px',
 
+      /**
+       * Hardcoded for now to NewlyRegister
+       *
+       * @attribute metric
+       * @type array
+       */
+      metric: null,
 
-<body unresolved>
-    
-    <div id="wikimetricsChart">
-    </div>
-    
-    <!-- 
-    See: 
-        http://googlewebcomponents.github.io/google-chart/components/google-chart/
-        For ways we in which we can pass data
-        
-        We are going to build a simple timeseries 
-        so :
-        cols='[{"label":"Mth", "type":"string"}, {"label":"Days", "type":"number"}]'
-        rows='[["Jan", 31],["Feb", 28],["Mar", 31]]'
-        
-        data {
-            cols: [],
-            
-            rows: [],
-        
-            rows: []
-        
-        }
-        Should be sufficient to pass data 
-    -->
-     
-     <!-- uncoment to test google chart component 
-     <google-chart id='43'
-       type='line'
-       height='300px'
-       width='400px'
-       options='{"title": "Distribution of days in 2001Q1"}'
-       data = '[["date","value", "value2"],[1376776800000,315,421],[1389654000000,466,455]]'
-     </google-chart>
-     
-    -->
-    
-</body>
+      /**
+       * Hardcoded for now to rowiki, ruwiki
+       *
+       * @attribute projects
+       * @type array
+       */
+      projects:null ,
 
-</html>
+      /**
+      * Data in the format consumed by google chart
+      * @attribute data
+      * @type array
+      **/
+      data: null,
+      
+      
+      /**
+       * Sets the options for the chart.
+       *
+       * Example:
+       * <pre>{
+       *   title: "Chart title goes here",
+       *   hAxis: {title: "Categories"},
+       *   vAxis: {title: "Values", minValue: 0, maxValue: 2},
+       *   legend: "none"
+       * };</pre>
+       * See <a href="https://google-developers.appspot.com/chart/interactive/docs/gallery">Google Visualization API reference (Chart Gallery)</a>
+       * for the options available to each chart type.
+       *
+       * @attribute options
+       * @type object
+       */
+      options: null,
+      
+      /**
+      * Raw data fetched from wikimetrics
+      *
+      * @attribute _wikimetricsData
+      * @type array
+      **/
+      _wikimetricsData: null,
+
+      /**
+      * Fired when component is loaded
+      **/
+      created: function() {
+        this.metric = []
+        this.data = [];
+        this._wikimetricsData = [];
+        this.projects = ["ruwki","rowiki"];
+        this.options = {};
+      },
+
+      /**
+      * I guess this is going have to do the data fetching
+      * Things are hardcoded for now
+      * The real component will
+      * loop through projects to see what it needs to retrieve
+      **/
+      ready : function(){
+          this.options.title = this.metric[0];
+          
+          //TODO nicer syntax. Batch fetching both records
+          Fetcher.json('../data/ruwiki.json', function(json) {
+              var ruwiki = json
+              ruwiki.label = "ruwiki";
+              this._wikimetricsData.push(ruwiki);
+
+          }.bind(this));
+
+          Fetcher.json('../data/rowiki.json', function(json) {
+              var rowiki = json;
+              rowiki.label = "rowiki";
+              this._wikimetricsData.push(rowiki);
+              // ahem .. little raise condition here, 1st fetch might not have finished
+              // ok for prototype
+              this.data = Adapter.adapt(this._wikimetricsData);
+
+          }.bind(this));
+
+      },
+   });
+   </script>
+
+</polymer>
+
