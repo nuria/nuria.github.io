@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/google-chart/google-chart.html">
+
 <!--
 
 `wikimetrics-chart` Google Chart graphs of Wikipedia's editor activity. Data served by Wikimetrics.
@@ -18,27 +19,9 @@ Public files:
 (for now deployed only to staging area: 
 https://metrics-staging.wmflabs.org/static/public/datafiles/)
 
-=======
-
-<!--
-
-wikimetrics-chart` A Webcomponent to display editor data from wikipedia. on your site.
-
-Prototype displays Newly Registered User data: 
-https://meta.wikimedia.org/wiki/Research:Newly_registered_user
-
-Data is included with prototype at this time. 
-Data will be feched from wikimetrics once public
-data is available on the production instance.
-
 Wikimetrics main site:
 https://metrics.wmflabs.org/
 
-Public files:
-(for now deployed only to staging area: 
-https://metrics-staging.wmflabs.org/static/public/datafiles/)
-
->>>>>>> 4224e199e03df73152bb2672a5fc4251de51f5df
 <wikimetrics-chart
   height='300px'
   width='400px'
@@ -54,6 +37,7 @@ https://metrics-staging.wmflabs.org/static/public/datafiles/)
 
 <polymer-element name="wikimetrics-chart" attributes=" width height projects metric">
     <script src="../bower_components/moment/min/moment.min.js"></script>
+
     <script>
     moment().format()
     </script>
