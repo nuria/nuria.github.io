@@ -1,8 +1,8 @@
 Wikimetrics Chart
 =================
-wikimetrics-chart is a web component that graphs of Wikipedia's editor activity. 
+wikimetrics-chart is a web component that graphs data about Wikipedia's editor activity. 
 
-It wraps a google-chart web component. Data served by Wikimetrics.
+It uses google charts to graph . The data is served by [Wikimetrics](https://metrics.wmflabs.org/).
 
 To use:
 
@@ -14,28 +14,33 @@ To use:
 
 Info
 -----
-Prototype displays Newly Registered User data: 
-https://meta.wikimedia.org/wiki/Research:Newly_registered_user
+Prototype displays [Newly Registered User](https://meta.wikimedia.org/wiki/Research:Newly_registered_user)
+data.
 
-Data is included with prototype at this time. 
-Data will be feched from wikimetrics once public
+Datafiles are included with prototype at this time. Data will be feched from wikimetrics once public
 data is available on the production instance.
 
-Wikimetrics main site:
-https://metrics.wmflabs.org/
+Public files are deployed (for now)
+only to [Wikimetrics Staging] (https://metrics-staging.wmflabs.org/static/public/datafiles/)
 
-Public files:
-(for now deployed only to staging area: 
- https://metrics-staging.wmflabs.org/static/public/datafiles/)
+Example Web Component usage:
 
-Wikimetrics main site:
-https://metrics.wmflabs.org/
+    <html> 
+    <head> 
+        <title> Google Chart visualization of Newly Registered Users via Web Component</title>
+        <script src="./bower_components/platform/platform.js"></script>
+        <link rel="import" href="./wikimetrics-chart/wikimetrics-chart.html">
+         
+    </head>
+    <body unresolved>
+         <wikimetrics-chart
+           type='line'
+           height='300px'
+           width='400px'
+           metric ='["NewlyRegistered"]'
+           data = '["rowiki","ruwiki"]'
+         </wikimetrics-chart> 
+    </body>
 
-    <wikimetrics-chart
-        height='300px'
-        width='400px'
-        projects = ['enwiki', 'dewiki']
-        metric = "NewlyRegister"
-        options='{"title": ""Blah""}'
-    </wikimetrics-chart>
+    </html>
 
