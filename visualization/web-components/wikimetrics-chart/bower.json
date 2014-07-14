@@ -11,7 +11,8 @@
     "Wikipedia",
     "Wikimetrics",
     "Google",
-    "Charts"
+    "Charts",
+    "web-components"
   ],
   "license": "Apache2",
   "ignore": [
