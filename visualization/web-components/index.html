@@ -3,13 +3,40 @@
     <title> Google Chart visualization of Newly Registered Users via Web Component</title>
     <script src="./bower_components/platform/platform.js"></script>
     <link rel="import" href="./bower_components/wikimetrics-chart/wikimetrics-chart.html">
+     <style>
+     body {
+         font-size:14px;
+         font-family:Verdana;
+         width:800px;
+     }
+     a {
+         color:gray;
+     }
      
+     </style>
 </head>
 <body unresolved>
-     <wikimetrics-chart
+    <h2> Visualization of Wikipedia's Editor Activity </h2>
+    <p>
+    Prototype displays
+    <a href="https://meta.wikimedia.org/wiki/Research:Newly_registered_user"> Newly Register Users Data</a>
+    from <a href="https://metrics.wmflabs.org/">Wikimetrics.</a></p>
+    
+    <small>
+     2014-07-14: Data is included with prototype at this time. 
+    
+    Data will be feched from wikimetrics once public
+    data is available on the production instance.
+
+
+    Public files are (for now)
+    deployed only to <a href="https://metrics-staging.wmflabs.org/static/public/datafiles/"> Staging Area </a>
+</small>
+
+    <wikimetrics-chart
        type='line'
-       height='300px'
-       width='400px'
+       height='400px'
+       width='600px'
        metric ='["NewlyRegistered"]'
        data = '["rowiki","ruwiki"]'
      </wikimetrics-chart> 
