@@ -60,12 +60,29 @@
 
 <p> Type Wikipedia for example <small>(<span data-bind=' text: message' style='font-weight:bold'></span>)</small> </p>
 
-<form>
-    <input id ="search"
+
+    <input 
         placeholder="+Add Project" 
         data-bind='projectAutocomplete' class=" typeahead search_box" autocomplete="off"/>
-</form>
 
+    <span class="twitter-typeahead" data-bind='if:displaySuboptions' style="position: relative; display: inline-block; direction: ltr;">
+       
+            <span class="tt-dropdown-menu"
+                style="position: absolute; top: 100%; left: -305px; z-index: 100; margin-top:18px">
+                 <div>
+                     <span class="tt-dataset-suboptions">
+                         <div class="tt-dataset-submenu">
+                             <p>&nbsp; &lt; &nbsp;<span  style="font-size:1.5em" data-bind='text:selectedOption'></span></p>
+                                 <span class="tt-suggestions">
+                                     <span data-bind="foreach: suboptions">
+                                         <div class="tt-suggestion" data-bind="text:option"> </div>
+                                     </span>
+                                 </span>
+                        </div>
+                    </span>
+                </div>
+       </span>
+    </span>
 
 <hr/>
 

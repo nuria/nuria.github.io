@@ -15,8 +15,14 @@ define(['knockout', 'text!./autocomplete.html','fetcher', 'typeahead'], function
     this.message = ko.observable(params.message);
     this.options = ko.observableArray([]);
     this.testing = ko.observable(true);
-    this.init();
-    
+    this.displaySuboptions = ko.observable(false);
+    this.selectedOption = ko.observable();
+    this.suboptions = ko.observableArray([]);
+    this.getBrowsingOptions();
+    var self = this;
+    /**
+    Define custom bindings for autocomplete
+    **/
     ko.bindingHandlers.projectAutocomplete = {
         
         update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
@@ -26,19 +32,7 @@ define(['knockout', 'text!./autocomplete.html','fetcher', 'typeahead'], function
             // to destroy typeaheads: $('.typeahead').typeahead('destroy');           
             if (data.length >0) {
                 
-                
-                /**var T = {};
-                    T.compile = function (template) {
-                        var compile = Handlebars.compile(template),
-                            render = {
-                                render: function (ctx) {
-                                    return compile(ctx);
-                                }
-                };**/
-                
-                /**
-                * Data is an array of objects
-                **/          
+                // Data is an array of option objects       
                 var substringMatcher = function(data) {
                   return function findMatches(q, cb) {
                     var matches, substrRegex;
@@ -55,18 +49,13 @@ define(['knockout', 'text!./autocomplete.html','fetcher', 'typeahead'], function
                       if (substrRegex.test(item.name)) {
                         // the typeahead jQuery plugin expects suggestions to a
                         // JavaScript object, refer to typeahead docs for more info
-                        matches.push({ name: item.name , description: item.description});
+                        matches.push(item);
                       }
                     });
  
                     cb(matches);
                   };
                 };
-                var projects = [];
-                
-                for (var i=0;i<data.length;i++) {
-                    projects.push(data[i].name);
-                }
                 
                 //TODO need to use ko templates here
                 var templates = {
@@ -74,10 +63,7 @@ define(['knockout', 'text!./autocomplete.html','fetcher', 'typeahead'], function
                             return "<span class=\"text-muted\">"+data.name+"<span class=\"footnote\"> "+data.description+"</span> </span>";
                      }
                  }
-                 
-                 
-                 
-                $('#search').typeahead({
+                $('.typeahead').typeahead({
                     hint: false,
                     highlight: true,
                     minLength: 2
@@ -89,14 +75,14 @@ define(['knockout', 'text!./autocomplete.html','fetcher', 'typeahead'], function
                       templates: templates,
                       source: substringMatcher(data)
                   
-                });
+                }).bind('typeahead:selected', self.displaySecondLevel.bind(self));
             }
         }
     };
   
   }
   
-  Autocomplete.prototype.init = function() {
+  Autocomplete.prototype.getBrowsingOptions = function() {
       /**
       Autocomplete options are of this form:
       [
@@ -109,9 +95,6 @@ define(['knockout', 'text!./autocomplete.html','fetcher', 'typeahead'], function
             }
         
         },
-      
-      Note that this is not a generic autocomplete but very taylored
-      to our dashboard scenario
       **/
       //Fecher is getting loaded but the way module is written, fetcher
       //ends up on global scope.
@@ -122,6 +105,25 @@ define(['knockout', 'text!./autocomplete.html','fetcher', 'typeahead'], function
       }.bind(this));
   }
   
+  Autocomplete.prototype.displaySecondLevel = function(event, suggestion, datasetName){
+      console.log('click');
+      console.log('display suboptions');
+      //this.displaySuboptions(true);
+      this.displaySuboptions(true)
+      console.log( this.displaySuboptions());
+      this.selectedOption(suggestion.name);
+      var languages = suggestion.languages;
+      var suboptions = [];
+      for (var p in languages) {
+          if(languages.hasOwnProperty(p)){
+              suboptions.push({option:p});
+          }
+      }
+      this.suboptions(suboptions);
+      
+      //display pannel on top of 1st level so we can hide it if user wants to go back
+      
+  }
   
   // This runs when the component is torn down. Put here any logic necessary to clean up,
   // for example cancelling setTimeouts or disposing Knockout subscriptions/computeds.
