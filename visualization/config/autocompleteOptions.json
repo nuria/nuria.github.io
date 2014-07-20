@@ -1,6 +1,7 @@
 [   
     { 
      "name": "Wikipedia",
+     "description": "280 languages",
      "languages": {
             "Spanish": "eswiki",
             "English": "enwiki",
@@ -9,6 +10,7 @@
     },
     { 
      "name": "WikiSomething",
+     "description": "100 languages",
      "languages": {
             "Spanish": "eswiki",
             "English": "enwiki",
@@ -17,6 +19,7 @@
     },
     { 
      "name":"Wikitionary",
+     "description": "170 languages",
      "languages": {
             "Spanish": "eswiki",
             "English": "enwiki",
