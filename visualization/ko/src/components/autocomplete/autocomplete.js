@@ -8,6 +8,7 @@ define(['knockout', 'text!./autocomplete.html','fetcher', 'typeahead'], function
       // no need for these to be observables as they are fixed values
       this.name = data.name;
       this.languages = data.languages;
+      this.description = data.description;
   }
   
   function Autocomplete(params) {
@@ -22,13 +23,23 @@ define(['knockout', 'text!./autocomplete.html','fetcher', 'typeahead'], function
             
             var data = bindingContext.$data.options();
         
-            // note that typeaheads are inmutable 
-            // so while ko can call this eveytime the array of options
-            // would change (in theory)
-            // typeahead only supports to be initialized once            
+            // to destroy typeaheads: $('.typeahead').typeahead('destroy');           
             if (data.length >0) {
                 
-                var substringMatcher = function(strs) {
+                
+                /**var T = {};
+                    T.compile = function (template) {
+                        var compile = Handlebars.compile(template),
+                            render = {
+                                render: function (ctx) {
+                                    return compile(ctx);
+                                }
+                };**/
+                
+                /**
+                * Data is an array of objects
+                **/          
+                var substringMatcher = function(data) {
                   return function findMatches(q, cb) {
                     var matches, substrRegex;
  
@@ -40,11 +51,11 @@ define(['knockout', 'text!./autocomplete.html','fetcher', 'typeahead'], function
  
                     // iterate through the pool of strings and for any string that
                     // contains the substring `q`, add it to the `matches` array
-                    $.each(strs, function(i, str) {
-                      if (substrRegex.test(str)) {
+                    $.each(data, function(i, item) {
+                      if (substrRegex.test(item.name)) {
                         // the typeahead jQuery plugin expects suggestions to a
                         // JavaScript object, refer to typeahead docs for more info
-                        matches.push({ value: str });
+                        matches.push({ name: item.name , description: item.description});
                       }
                     });
  
@@ -57,15 +68,26 @@ define(['knockout', 'text!./autocomplete.html','fetcher', 'typeahead'], function
                     projects.push(data[i].name);
                 }
                 
+                //TODO need to use ko templates here
+                var templates = {
+                     suggestion: function (data) {
+                            return "<span class=\"text-muted\">"+data.name+"<span class=\"footnote\"> "+data.description+"</span> </span>";
+                     }
+                 }
+                 
+                 
+                 
                 $('#search').typeahead({
-                    hint: true,
+                    hint: false,
                     highlight: true,
-                    minLength: 1
+                    minLength: 2
                     },
                     {
-                      name: 'example',
+                      name: 'projects',
                       displayKey: 'value',
-                      source: substringMatcher(projects)
+                      valueKey:'name',
+                      templates: templates,
+                      source: substringMatcher(data)
                   
                 });
             }
