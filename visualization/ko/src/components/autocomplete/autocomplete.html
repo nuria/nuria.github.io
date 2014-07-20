@@ -1,0 +1,16 @@
+<p data-bind=' text: message' style='font-weight:bold'></p>
+<hr/>
+<form>
+    <input id ="search" class="typeahead" 
+        placeholder="+Add Project" 
+        data-bind='projectAutocomplete' autocomplete="off"/>
+</form>
+
+
+<hr/>
+
+<ul data-bind="foreach: options">
+    <li> <p data-bind='text:name'></p></li>
+</ul>
+
+

@@ -1,0 +1,26 @@
+[   
+    { 
+     "name": "Wikipedia",
+     "languages": {
+            "Spanish": "eswiki",
+            "English": "enwiki",
+            "German":  "dewiki"
+         }
+    },
+    { 
+     "name": "WikiSomething",
+     "languages": {
+            "Spanish": "eswiki",
+            "English": "enwiki",
+            "German":  "dewiki"
+         }
+    },
+    { 
+     "name":"Wikitionary",
+     "languages": {
+            "Spanish": "eswiki",
+            "English": "enwiki",
+            "German": "dewiki"
+        }
+    }
+]
