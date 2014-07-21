@@ -1,0 +1,47 @@
+[   
+    { 
+     "name": "English",
+     "description": "All projects",
+     "projects": {
+            "Wikipedia": "eswiki",
+            "Somethingwiki": "somewiki",
+            "Wikidictionary":  "somewiki"
+         }
+    },
+    { 
+     "name": "German",
+     "description": "All projects",
+     "projects": {
+            "Wikipedia": "dewiki",
+            "SomethingGermanWiki": "somewiki",
+            "Wikidictionary":  "somewiki"
+         }
+    },
+    { 
+     "name": "Spanish",
+     "description": "All projects",
+     "projects": {
+            "Wikipedia": "eswiki",
+            "SomethingSpanishWiki": "somewiki",
+            "Wikidictionary":  "somewiki"
+         }
+    },
+    { 
+     "name": "Cantonese",
+     "description": "All projects",
+     "projects": {
+            "Wikipedia": "cawiki",
+            "SomethingCantoneseWiki": "somewiki",
+            "Wikidictionary":  "somewiki"
+         }
+    },
+    { 
+     "name": "Catalan",
+     "description": "All projects",
+     "projects": {
+            "Wikipedia": "cawiki",
+            "SomethingCatalanWiki": "somewiki",
+            "Wikidictionary":  "somewiki"
+         }
+    }
+]
