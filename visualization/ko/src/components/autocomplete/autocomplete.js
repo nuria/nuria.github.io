@@ -106,11 +106,7 @@ define(['knockout', 'text!./autocomplete.html','fetcher', 'typeahead'], function
   }
   
   Autocomplete.prototype.displaySecondLevel = function(event, suggestion, datasetName){
-      console.log('click');
-      console.log('display suboptions');
-      //this.displaySuboptions(true);
-      this.displaySuboptions(true)
-      console.log( this.displaySuboptions());
+      this.displaySuboptions(true);
       this.selectedOption(suggestion.name);
       var languages = suggestion.languages;
       var suboptions = [];
@@ -121,9 +117,16 @@ define(['knockout', 'text!./autocomplete.html','fetcher', 'typeahead'], function
       }
       this.suboptions(suboptions);
       
-      //display pannel on top of 1st level so we can hide it if user wants to go back
       
   }
+  
+  Autocomplete.prototype.hideSecondLevel = function(data,event){
+      this.displaySuboptions(false);
+      this.selectedOption();
+      this.suboptions([]);
+        
+  }
+  
   
   // This runs when the component is torn down. Put here any logic necessary to clean up,
   // for example cancelling setTimeouts or disposing Knockout subscriptions/computeds.

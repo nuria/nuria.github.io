@@ -1,7 +1,7 @@
 <style>
 
-.search_box {
-    width:300px;
+#autocomplete {
+    width:280px;
 }
 
 .tt-query,
@@ -52,8 +52,16 @@
 
 }
 
+.tt-suggestion:hover {
+    font-weight:bold;
+}
+
 .tt-suggestion p {
     margin: 0;
+}
+
+.tt-back:hover{
+    font-weight:bold;
 }
 </style>
 
@@ -61,19 +69,20 @@
 <p> Type Wikipedia for example <small>(<span data-bind=' text: message' style='font-weight:bold'></span>)</small> </p>
 
 
-    <input 
+    <input id="autocomplete"
         placeholder="+Add Project" 
         data-bind='projectAutocomplete' class=" typeahead search_box" autocomplete="off"/>
 
-    <span class="twitter-typeahead" data-bind='if:displaySuboptions' style="position: relative; display: inline-block; direction: ltr;">
+    <span   class="twitter-typeahead" data-bind='if:displaySuboptions,click:hideSecondLevel' style="position: relative; display: inline-block; direction: ltr;">
        
             <span class="tt-dropdown-menu"
-                style="position: absolute; top: 100%; left: -305px; z-index: 100; margin-top:18px">
+                style="position: absolute; top: 100%; left: -305px; z-index: 100; margin-top:-20px">
                  <div>
                      <span class="tt-dataset-suboptions">
                          <div class="tt-dataset-submenu">
-                             <p>&nbsp; &lt; &nbsp;<span  style="font-size:1.5em" data-bind='text:selectedOption'></span></p>
-                                 <span class="tt-suggestions">
+                             <p class="tt-back"><span style="font-size:2em">&lt;</span>
+                                                <span  style="font-size:1.5em" data-bind='text:selectedOption'></span></p>
+                                <span class="tt-suggestions">
                                      <span data-bind="foreach: suboptions">
                                          <div class="tt-suggestion" data-bind="text:option"> </div>
                                      </span>
