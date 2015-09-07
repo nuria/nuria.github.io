@@ -32,6 +32,7 @@
     "knockout-projections": "~1.1.0-pre"
   },
   "resolutions": {
-    "jquery": ">=1.9.0"
+    "jquery": ">=1.9.0",
+    "components-bootstrap": "~3.3.5"
   }
 }
