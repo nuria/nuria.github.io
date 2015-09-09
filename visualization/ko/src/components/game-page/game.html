@@ -2,7 +2,10 @@
 
 <p>This is a game</p>
 
-Clicking  <button id="shake-it"> Shake it </button> gives you 5 random letters and clicking on each letter you need to form a word
+Clicking  <button id="shake-it" type="button" class="btn btn-default" data-bind="click:shakeIt"> Shake it </button> gives you 5 random letters.
+You need to form a word or many words using some or all the letters.
+
+
 
 
 <h3 data-bind="foreach:letters">
@@ -10,6 +13,11 @@ Clicking  <button id="shake-it"> Shake it </button> gives you 5 random letters a
 	</span>
 
 </h3>
+
+<button id="make-word" type="button" class="btn btn-default" data-bind="visible:showGameBtn"> Make Word </button>
+<button type="button" class="btn btn-default" data-bind="visible:showGameBtn"> Reset </button>
+
+
 
 
 
