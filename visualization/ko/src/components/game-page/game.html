@@ -9,8 +9,7 @@ You need to form a word or many words using some or all the letters.
 
 
 <h3 data-bind="foreach:letters">
-	<span class="label label-info" data-bind="text:$data">
-	</span>
+	<button class="btn btn-default" data-bind="text:$data,click:$parent.addLetter.bind($parent)"> </button>
 
 </h3>
 
@@ -19,6 +18,8 @@ You need to form a word or many words using some or all the letters.
 
 
 
-
-
-
+<div data-bind="visible:showWordList">
+<ul class="list-group"  data-bind="foreach:words">
+	<li class="list-group-item"  data-bin="text:$data">
+</ul>
+</div>

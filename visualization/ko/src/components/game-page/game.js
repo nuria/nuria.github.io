@@ -1,6 +1,6 @@
 define(["knockout", "text!./game.html"], function (ko, gameTemplate) {
 
-
+	"use strict";
 	/**
 	 * Generates 5 letters of alphabet at random
 	 **/
@@ -12,6 +12,12 @@ define(["knockout", "text!./game.html"], function (ko, gameTemplate) {
 		this.message = ko.observable('Welcome!');
 		this.letters = ko.observableArray();
 		this.showGameBtn = ko.observable(false);
+		this.showWordList = ko.observable(false);
+		this.words = ko.observableArray();
+		this.word = null;
+
+		var self = this;
+
 	}
 
 
@@ -38,6 +44,36 @@ define(["knockout", "text!./game.html"], function (ko, gameTemplate) {
 		this.letters(values);
 		this.showGameBtn(true);
 	};
+
+
+	/**
+	Adds letter to current word.
+	Hides letter, if current word does not exists
+	yet it creates a new word
+	**/
+	GameViewModel.prototype.addLetter = function (letter) {
+		if (this.word !== null) {
+			this.word = this.word + letter;
+		} else {
+			this.word = letter;
+		}
+		//remove from letters array
+		var lettersTmp = this.letters();
+		var newLetters = new Array();
+		for (let l of lettersTmp) {
+			if (!(l === letter)) {
+				newLetters.push(l);
+			}
+		}
+
+		this.letters(newLetters);
+	}
+
+	/**
+	 **/
+	GameViewModel.prototype.addWordToLIst = function () {
+
+	}
 
 	return {
 		viewModel: GameViewModel,
