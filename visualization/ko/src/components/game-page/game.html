@@ -13,13 +13,22 @@ You need to form a word or many words using some or all the letters.
 
 </h3>
 
-<button id="make-word" type="button" class="btn btn-default" data-bind="visible:showGameBtn"> Make Word </button>
-<button type="button" class="btn btn-default" data-bind="visible:showGameBtn"> Reset </button>
+<span data-bind="visible:showGameBtn">
+<button id="make-word" type="button" class="btn btn-default" data-bind=" click: addWord"> Add Word </button>
+<button type="button" class="btn btn-default" data-bind="click:resetWord">Cancel Word </button>
+</span>
 
+<hr/>
 
+<div class="panel panel-default"  data-bind="visible:showWordList">
+	<div class="panel-heading"> Words so far ...</div>
 
-<div data-bind="visible:showWordList">
-<ul class="list-group"  data-bind="foreach:words">
-	<li class="list-group-item"  data-bin="text:$data">
+ <div class="panel-body">
+ <h3 data-bind="text:currentWord"> </h3>
+</div>
+<ul  data-bind="foreach:words" class="list-group" >
+	<li class="list-group-item"  data-bind="text:$data">
 </ul>
 </div>
+
+

@@ -1,29 +1,18 @@
 define(["knockout", "text!./game.html"], function (ko, gameTemplate) {
 
 	"use strict";
+
 	/**
-	 * Generates 5 letters of alphabet at random
+	 * Model of our game
+	 * Receives actions from View Model and translates
+	 * those into game actions
 	 **/
-	function _shakeIt() {
-
+	function Game() {
+		this.words = new Array();
+		this.letters = new Array();
 	}
 
-	function GameViewModel(route) {
-		this.message = ko.observable('Welcome!');
-		this.letters = ko.observableArray();
-		this.showGameBtn = ko.observable(false);
-		this.showWordList = ko.observable(false);
-		this.words = ko.observableArray();
-		this.word = null;
-
-		var self = this;
-
-	}
-
-
-
-	GameViewModel.prototype.shakeIt = function () {
-		console.log("clicked");
+	Game.prototype.shakeIt = function () {
 		var values = new Array();
 		var holder = new Int8Array(5);
 		window.crypto.getRandomValues(holder);
@@ -41,21 +30,71 @@ define(["knockout", "text!./game.html"], function (ko, gameTemplate) {
 
 		}
 
-		this.letters(values);
+		this.letters = values;
+		return this.letters;
+	}
+
+	Game.prototype.getLetters = function () {
+		return this.letters;
+	};
+
+	Game.prototype.getWords = function () {
+		return this.words;
+	}
+
+	Game.prototype.addWord = function (word) {
+		this.words.push(word)
+	}
+
+	Game.prototype.reset = function () {
+		this.letters = null;
+		this.words = null;
+	}
+
+
+
+	/**
+	 * Game object. ViewModel.
+	 * Receives user's UI actions and passes those to model
+	 **/
+	function GameViewModel(route) {
+		this.game = new Game();
+		this.letters = ko.observableArray();
+		this.showGameBtn = ko.observable(false);
+		this.showWordList = ko.observable(false);
+		this.currentWord = ko.observable("");
+		this.words = ko.observableArray();
+
+	}
+
+
+	GameViewModel.prototype.shakeIt = function () {
+		this.letters(this.game.shakeIt())
 		this.showGameBtn(true);
 	};
 
 
-	/**
-	Adds letter to current word.
-	Hides letter, if current word does not exists
-	yet it creates a new word
-	**/
+	GameViewModel.prototype.resetGame = function () {
+			this.game.reset();
+			this.showGameBtn = ko.observable(false);
+			this.showWordList = ko.observable(false);
+			this.letters = ko.observableArray();
+		}
+		/**
+		 * Shows word list if hidden
+		 * Adds letter to current word and hides letter
+		 * from available letters.
+		 **/
 	GameViewModel.prototype.addLetter = function (letter) {
-		if (this.word !== null) {
-			this.word = this.word + letter;
+
+		if (!this.showWordList()) {
+			this.showWordList(true);
+		}
+
+		if (this.currentWord !== null) {
+			this.currentWord(this.currentWord() + letter);
 		} else {
-			this.word = letter;
+			this.currentWord(letter);
 		}
 		//remove from letters array
 		var lettersTmp = this.letters();
@@ -70,8 +109,23 @@ define(["knockout", "text!./game.html"], function (ko, gameTemplate) {
 	}
 
 	/**
+	 * Restore letters and cancel current word
+	 *
 	 **/
-	GameViewModel.prototype.addWordToLIst = function () {
+	GameViewModel.prototype.resetWord = function () {
+		this.letters(this.game.getLetters());
+		this.word = null;
+	}
+
+	/**
+	 * Restores letters and word holder
+	 **/
+	GameViewModel.prototype.addWord = function () {
+		this.game.addWord(this.word)
+		this.words(this.game.getWords())
+		this.word = null;
+		this.letters(this.game.getLetters());
+
 
 	}
 
