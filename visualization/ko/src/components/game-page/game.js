@@ -14,20 +14,24 @@ define(["knockout", "text!./game.html"], function (ko, gameTemplate) {
 
 	Game.prototype.shakeIt = function () {
 		var values = new Array();
-		var holder = new Int8Array(5);
+		var holder = new Int8Array(50);
 		window.crypto.getRandomValues(holder);
 		//now get those mode 26
 		var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G',
 			'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
 			'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
 		];
+
+
 		for (var i = 0; i < holder.length; i++) {
+			if (values.length == 5) break;
 			var index = holder[i] % 25;
 			if (index < 0) {
 				index = index * (-1);
 			}
-			values.push(alphabet[index])
-
+			if (values.indexOf(alphabet[index]) < 0) {
+				values.push(alphabet[index]);
+			}
 		}
 
 		this.letters = values;
@@ -60,10 +64,17 @@ define(["knockout", "text!./game.html"], function (ko, gameTemplate) {
 	function GameViewModel(route) {
 		this.game = new Game();
 		this.letters = ko.observableArray();
-		this.showGameBtn = ko.observable(false);
 		this.showWordList = ko.observable(false);
 		this.currentWord = ko.observable("");
 		this.words = ko.observableArray();
+		this.showGameBtn = ko.computed(function () {
+			if (this.currentWord() != null && this.currentWord().length > 1) {
+				return true;
+			} else {
+				return false;
+			}
+		}, this);
+
 
 	}
 
@@ -82,9 +93,9 @@ define(["knockout", "text!./game.html"], function (ko, gameTemplate) {
 
 	GameViewModel.prototype.resetGame = function () {
 			this.game.reset();
-			this.showGameBtn(false);
 			this.showWordList(false);
 			this.letters([]);
+			this.words([]);
 		}
 		/**
 		 * Shows word list if hidden
@@ -112,10 +123,7 @@ define(["knockout", "text!./game.html"], function (ko, gameTemplate) {
 		}
 
 		this.letters(newLetters);
-		//we have at least 2 letters, show btns
-		if (this.currentWord().length > 1) {
-			this.showGameBtn(true);
-		}
+
 
 	}
 
