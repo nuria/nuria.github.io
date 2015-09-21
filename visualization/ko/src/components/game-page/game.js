@@ -43,7 +43,7 @@ define(["knockout", "text!./game.html"], function (ko, gameTemplate) {
 	}
 
 	Game.prototype.addWord = function (word) {
-		this.words.push(word)
+		this.words.push(word);
 	}
 
 	Game.prototype.reset = function () {
@@ -69,16 +69,22 @@ define(["knockout", "text!./game.html"], function (ko, gameTemplate) {
 
 
 	GameViewModel.prototype.shakeIt = function () {
+
+		if (this.showGameBtn()) {
+			//game has started it, reset it
+			this.resetGame();
+		}
 		this.letters(this.game.shakeIt())
-		this.showGameBtn(true);
+
+
 	};
 
 
 	GameViewModel.prototype.resetGame = function () {
 			this.game.reset();
-			this.showGameBtn = ko.observable(false);
-			this.showWordList = ko.observable(false);
-			this.letters = ko.observableArray();
+			this.showGameBtn(false);
+			this.showWordList(false);
+			this.letters([]);
 		}
 		/**
 		 * Shows word list if hidden
@@ -91,7 +97,7 @@ define(["knockout", "text!./game.html"], function (ko, gameTemplate) {
 			this.showWordList(true);
 		}
 
-		if (this.currentWord !== null) {
+		if (this.currentWord() !== null) {
 			this.currentWord(this.currentWord() + letter);
 		} else {
 			this.currentWord(letter);
@@ -106,6 +112,11 @@ define(["knockout", "text!./game.html"], function (ko, gameTemplate) {
 		}
 
 		this.letters(newLetters);
+		//we have at least 2 letters, show btns
+		if (this.currentWord().length > 1) {
+			this.showGameBtn(true);
+		}
+
 	}
 
 	/**
@@ -121,9 +132,9 @@ define(["knockout", "text!./game.html"], function (ko, gameTemplate) {
 	 * Restores letters and word holder
 	 **/
 	GameViewModel.prototype.addWord = function () {
-		this.game.addWord(this.word)
-		this.words(this.game.getWords())
-		this.word = null;
+		this.game.addWord(this.currentWord());
+		this.words(this.game.getWords());
+		this.currentWord(null);
 		this.letters(this.game.getLetters());
 
 
