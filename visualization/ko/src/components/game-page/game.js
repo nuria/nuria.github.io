@@ -64,7 +64,6 @@ define(["knockout", "text!./game.html"], function (ko, gameTemplate) {
 	function GameViewModel(route) {
 		this.game = new Game();
 		this.letters = ko.observableArray();
-		this.showWordList = ko.observable(false);
 		this.currentWord = ko.observable("");
 		this.words = ko.observableArray();
 		this.showGameBtn = ko.computed(function () {
@@ -74,7 +73,9 @@ define(["knockout", "text!./game.html"], function (ko, gameTemplate) {
 				return false;
 			}
 		}, this);
-
+		this.showWordList = ko.computed(function () {
+			return this.words().length > 0;
+		}, this);
 
 	}
 
@@ -93,7 +94,6 @@ define(["knockout", "text!./game.html"], function (ko, gameTemplate) {
 
 	GameViewModel.prototype.resetGame = function () {
 			this.game.reset();
-			this.showWordList(false);
 			this.letters([]);
 			this.words([]);
 		}
@@ -104,9 +104,7 @@ define(["knockout", "text!./game.html"], function (ko, gameTemplate) {
 		 **/
 	GameViewModel.prototype.addLetter = function (letter) {
 
-		if (!this.showWordList()) {
-			this.showWordList(true);
-		}
+
 
 		if (this.currentWord() !== null) {
 			this.currentWord(this.currentWord() + letter);
@@ -133,7 +131,8 @@ define(["knockout", "text!./game.html"], function (ko, gameTemplate) {
 	 **/
 	GameViewModel.prototype.resetWord = function () {
 		this.letters(this.game.getLetters());
-		this.word = null;
+		this.currentWord(null);
+
 	}
 
 	/**

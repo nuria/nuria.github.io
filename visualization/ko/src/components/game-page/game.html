@@ -20,12 +20,13 @@ You need to form a word or many words using some or all the letters.
 
 <hr/>
 
-<div class="panel panel-default"  data-bind="visible:showWordList">
-	<div class="panel-heading"> Words so far ...</div>
-
- <div class="panel-body">
- <h3 data-bind="text:currentWord"> </h3>
+<div class="panel-body,visible:currentWord">
+ <h2 data-bind="text:currentWord"> </h2>
 </div>
+
+<div class="panel panel-default"  data-bind="visible:showWordList">
+
+<div class="panel-heading"> Words so far ...</div>
 <ul  data-bind="foreach:words" class="list-group" >
 	<li class="list-group-item"  data-bind="text:$data">
 </ul>
