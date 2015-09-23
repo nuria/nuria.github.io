@@ -114,7 +114,9 @@ define(["knockout", "text!./game.html"], function (ko, gameTemplate) {
 		//remove from letters array
 		var lettersTmp = this.letters();
 		var newLetters = new Array();
-		for (let l of lettersTmp) {
+
+		for (var i = 0; i < lettersTmp.length; i++) {
+			var l = lettersTmp[i];
 			if (!(l === letter)) {
 				newLetters.push(l);
 			}
